@@ -1,36 +1,45 @@
-# Recipe Blog - Using Node.js and MongoDB
+# Taste Craft
 
-## Create .env file
-Create a .env file to store your MongoDB database credentials
+Taste Craft is a recipe sharing web application built using Node.js, Express.js, MongoDB, EJS, and Bootstrap.
 
-Example only (copy the full connection string from MongoDB):
-```
-MONGODB_URI = mongodb+srv://<username>:<password>@cluster0.6m5cz.mongodb.net/
-```
+## Features
+
+ Browse recipes by category
+ View detailed recipe instructions
+ Search recipes
+ Submit new recipes
+ Random recipe explorer
+ MongoDB Atlas integration
+ Image upload support
+
+## Tech Stack
+
+ Node.js
+ Express.js
+ MongoDB Atlas
+ Mongoose
+ EJS
+ Bootstrap
 
 ## Installation
-To run this project, install it locally using npm:
 
+```bash
+npm install
+npm start
 ```
-$ npm install
-$ npm start
+
+## Environment Variables
+
+Create a `.env` file:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
 ```
 
+## Author
 
-### YouTube Video & Article
+Krishna Sharma
 
-[YouTube Video](https://youtu.be/OEdPH4fV7vY)
+## Project Status
 
-[Read Article](https://raddy.dev/blog/how-to-build-a-recipe-blog-using-node-js-and-mongodb-express-ejs-mongoose-crud/)
-
-### YouTube Channel - Raddy
-
-[Subscribe to my YouTube Channel](https://www.youtube.com/channel/UCvXscyQ0cLzPZeNOeXI45Sw?sub_confirmation=1)
-
-### Website
-[www.raddy.dev](https://www.raddy.dev)
-
-### Donations
-[Via Paypal](https://www.paypal.com/donate/?hosted_button_id=YUH7JRDUN5QEY)
-
-[Buy me a Coffee](https://www.buymeacoffee.com/RaddyTheBrand)
+Currently under active development.
