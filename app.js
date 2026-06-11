@@ -4,7 +4,6 @@ const fileUpload = require('express-fileupload');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
-const mongoose = require('mongoose');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -12,10 +11,7 @@ const port = process.env.PORT || 3000;
 // env config
 require('dotenv').config();
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.log("Mongo Error:", err));
+require('./server/models/database');
 
 // Middlewares
 app.use(express.urlencoded({ extended: true }));
