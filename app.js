@@ -17,7 +17,10 @@ require('./server/models/database');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(expressLayouts);
-app.use(fileUpload());
+app.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: "/tmp/",
+}));
 
 // session + cookies
 app.use(cookieParser('CookingBlogSecure'));

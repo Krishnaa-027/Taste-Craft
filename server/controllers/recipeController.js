@@ -1,6 +1,8 @@
 require('../models/database');
 const Category = require('../models/Category');
 const Recipe = require('../models/Recipe');
+const cloudinary = require("../config/cloudConfig");
+const fs = require("fs");
 
 /**
  * GET /
@@ -14,8 +16,9 @@ exports.homepage = async(req, res) => {
     const thai = await Recipe.find({ 'category': 'Thai' }).limit(limitNumber);
     const american = await Recipe.find({ 'category': 'American' }).limit(limitNumber);
     const chinese = await Recipe.find({ 'category': 'Chinese' }).limit(limitNumber);
+    const indian = await Recipe.find({ 'category': 'Indian' }).limit(limitNumber);
 
-    const food = { latest, thai, american, chinese };
+    const food = { latest, thai, american, chinese, indian };
 
     res.render('index', { title: 'Cooking Blog - Home', categories, food } );
   } catch (error) {
@@ -132,24 +135,43 @@ exports.submitRecipe = async(req, res) => {
 exports.submitRecipeOnPost = async(req, res) => {
   try {
 
-    let imageUploadFile;
-    let uploadPath;
-    let newImageName;
+    // let imageUploadFile;
+    // let uploadPath;
+    // let newImageName;
+    let imageUrl = "";
 
-    if(!req.files || Object.keys(req.files).length === 0){
-      console.log('No Files where uploaded.');
-    } else {
+    // if(!req.files || Object.keys(req.files).length === 0){
+    //   console.log('No Files where uploaded.');
+    // } else {
 
-      imageUploadFile = req.files.image;
-      newImageName = Date.now() + imageUploadFile.name;
+    //   imageUploadFile = req.files.image;
+    //   newImageName = Date.now() + imageUploadFile.name;
 
-      uploadPath = require('path').resolve('./') + '/public/uploads/' + newImageName;
+    //   uploadPath = require('path').resolve('./') + '/public/uploads/' + newImageName;
 
-      imageUploadFile.mv(uploadPath, function(err){
-        if(err) return res.satus(500).send(err);
-      })
+    //   imageUploadFile.mv(uploadPath, function(err){
+    //     if(err) return res.satus(500).send(err);
+    //   })
 
+    // }
+
+    if (!req.files || Object.keys(req.files).length === 0) {
+      req.flash("infoErrors", "Please upload an image.");
+      return res.redirect("/submit-recipe");
     }
+
+    const imageUploadFile = req.files.image;
+
+    const result = await cloudinary.uploader.upload(
+      imageUploadFile.tempFilePath,
+      {
+        folder: "taste-craft"
+      }
+    );
+
+    fs.unlinkSync(imageUploadFile.tempFilePath);
+
+    imageUrl = result.secure_url;
 
     const newRecipe = new Recipe({
       name: req.body.name,
@@ -157,7 +179,7 @@ exports.submitRecipeOnPost = async(req, res) => {
       email: req.body.email,
       ingredients: req.body.ingredients,
       category: req.body.category,
-      image: newImageName
+      image: imageUrl
     });
     
     await newRecipe.save();
